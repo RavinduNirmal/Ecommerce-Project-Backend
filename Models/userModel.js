@@ -1,4 +1,4 @@
-const mongoose = require('mongoose'); // Erase if already required
+const mongoose = require('mongoose');
 
 // Declare the Schema of the Mongo model
 var userSchema = new mongoose.Schema({
@@ -12,13 +12,11 @@ var userSchema = new mongoose.Schema({
     },
     email:{
         type:String,
-        required:true,
-        unique:true,
+        required:true
     },
     mobile:{
         type:String,
-        required:true,
-        unique:true,
+        required:true
     },
     password:{
         type:String,
@@ -28,4 +26,3 @@ var userSchema = new mongoose.Schema({
 
 //Export the model
 module.exports = mongoose.model('User', userSchema);
-
