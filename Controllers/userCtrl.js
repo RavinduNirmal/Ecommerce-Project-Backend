@@ -28,17 +28,6 @@ const createUser = asyncHandler(async (req, res) => {
   }
 });
 
-/*Get all Users */
-const getUser = async (req, res) => {
-  try {
-    const users = await User.find({});
-    res.send(users);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send(error);
-  }
-};
-
 /*Login An user*/
 const LoginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -59,4 +48,27 @@ const LoginUser = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createUser, getUser, LoginUser };
+
+/*Get all Users */
+const getAllUser = asyncHandler(async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.send(users);
+  } catch (error) {
+    throw new Error(error)
+  }
+});
+
+/*Get A Single User */
+const getAUser =asyncHandler(async(req,res) =>{
+    const {id} = req.params;
+    try{
+          const getaUser = await User.findById(id)
+               res.json(getaUser)
+          
+    }catch(error){
+         throw new Error(error)
+    }
+});
+
+module.exports = { createUser, getAllUser, LoginUser, getAUser };
