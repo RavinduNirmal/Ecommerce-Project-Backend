@@ -9,7 +9,6 @@ const createUser = asyncHandler(async (req, res) => {
   try {
     const newUser = await User.create(req.body);
     res.json(newUser);
-    console.log(email);
   } catch (error) {
     if (error.name === "MongoServerError" && error.code === 11000) {
       // Duplicate key error (unique constraint violation)
@@ -48,38 +47,57 @@ const LoginUser = asyncHandler(async (req, res) => {
   }
 });
 
-
 /*Get all Users */
 const getAllUser = asyncHandler(async (req, res) => {
   try {
     const users = await User.find({});
     res.send(users);
   } catch (error) {
-    throw new Error(error)
+    throw new Error(error);
   }
 });
 
 /*Get A Single User */
-const getAUser =asyncHandler(async(req,res) =>{
-    const {id} = req.params;
-    try{
-          const getaUser = await User.findById(id)
-               res.json({getaUser,})
-          
-    }catch(error){
-         throw new Error(error)
-    }
+const getAUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    const getaUser = await User.findById(id);
+    res.json({ getaUser });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+/*Update A User */
+const updateUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updateAUser = await User.findByIdAndUpdate(
+      id,
+      {
+        firstname: req?.body?.firstname,
+        lastname: req?.body?.lastname,
+        email: req?.body?.email,
+        mobile: req?.body?.mobile,
+      },
+      {
+        new: true,
+      }
+    );
+    res.json(updateAUser);
+  } catch (error) {
+    throw new Error(error);
+  }
 });
 
 /*Delete A User */
-const deleteUser =asyncHandler(async(req,res) =>{
-  const {id} = req.params;
-  try{
-        const deleteaUser = await User.findByIdAndDelete(id)
-             res.json({deleteaUser,})
-        
-  }catch(error){
-       throw new Error(error)
+const deleteUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deleteaUser = await User.findByIdAndDelete(id);
+    res.json({ deleteaUser });
+  } catch (error) {
+    throw new Error(error);
   }
 });
-module.exports = { createUser, getAllUser, LoginUser, getAUser,deleteUser };
+module.exports = { createUser, getAllUser, LoginUser, getAUser,updateUser, deleteUser };
