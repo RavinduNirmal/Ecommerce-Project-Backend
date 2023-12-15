@@ -70,7 +70,7 @@ const getAUser = asyncHandler(async (req, res) => {
 
 /*Update A User */
 const updateUser = asyncHandler(async (req, res) => {
-  const {_id } = req.user;
+  const { _id } = req.user;
   try {
     const updateAUser = await User.findByIdAndUpdate(
       _id,
@@ -100,4 +100,57 @@ const deleteUser = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
-module.exports = { createUser, getAllUser, LoginUser, getAUser,updateUser, deleteUser };
+
+/*Block User */
+const blockUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    const blockUser = await User.findByIdAndUpdate(
+      id,
+      {
+        isBlocked: true,
+      },
+      {
+        new: true,
+      }
+    );
+    res.json({
+      message:"user Blocked1"
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+/*Unblock User */
+const unblockUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    const unblockUser = await User.findByIdAndUpdate(
+      id,
+      {
+        isBlocked: false,
+      },
+      {
+        new: true,
+      }
+    );
+
+    res.json({
+      message:"User UnBlocked",
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+module.exports = {
+  createUser,
+  getAllUser,
+  LoginUser,
+  getAUser,
+  updateUser,
+  deleteUser,
+  blockUser,
+  unblockUser,
+};
