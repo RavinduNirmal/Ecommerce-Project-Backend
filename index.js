@@ -7,11 +7,13 @@ const PORT = process.env.PORT || 4000;
 const authRouter=require('./Routes/authRoute.js');
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const cookieParser =require('cookie-parser');
 dbConnect();
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 app.use('/api/user',authRouter);
 
