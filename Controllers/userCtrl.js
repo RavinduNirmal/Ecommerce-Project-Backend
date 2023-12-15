@@ -64,7 +64,7 @@ const getAUser =asyncHandler(async(req,res) =>{
     const {id} = req.params;
     try{
           const getaUser = await User.findById(id)
-               res.json(getaUser)
+               res.json({getaUser,})
           
     }catch(error){
          throw new Error(error)
@@ -75,8 +75,8 @@ const getAUser =asyncHandler(async(req,res) =>{
 const deleteUser =asyncHandler(async(req,res) =>{
   const {id} = req.params;
   try{
-        const getaUser = await User.findByIdAndDelete(id)
-             res.json(getaUser)
+        const deleteaUser = await User.findByIdAndDelete(id)
+             res.json({deleteaUser,})
         
   }catch(error){
        throw new Error(error)
