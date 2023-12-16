@@ -35,6 +35,22 @@ var productSchema = new mongoose.Schema({
         type:Number,
         default:0,
     },
+    images:{
+        type:Array,
+    },
+    color:{
+        type:String,
+        enum:['Black','Brown','White']
+    },
+    ratings: [
+        {
+          star: Number,
+          comment: String,
+          postedby: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        },
+      ]
+},{
+    timestamps:true
 });
 
 module.exports = mongoose.model("Product",productSchema);
