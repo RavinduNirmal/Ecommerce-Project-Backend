@@ -7,8 +7,6 @@ const { generateRefreshToken } = require("../Config/refreshToken");
 
 /* Register a User */
 const createUser = asyncHandler(async (req, res) => {
-  const email = req.body.email;
-
   try {
     const newUser = await User.create(req.body);
     res.json(newUser);
