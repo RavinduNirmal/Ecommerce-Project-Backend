@@ -78,7 +78,34 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
   });
 });
 
-/*Get all npUsers */
+/*Logout A User */
+const logout = asyncHandler(async (req, res) => {
+  const cookie = req.cookies;
+
+  if (!cookie?.refreshToken) {
+    return res.status(204).json({ message: "No Refresh Token in Cookies" });
+  }
+
+  const refreshToken = cookie.refreshToken;
+
+  const user = await User.findOne({ refreshToken });
+  if (!user) {
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+    });
+    return res.status(204).json({ message: "User already logged out" });
+  }
+
+  await User.findOneAndUpdate({ refreshToken: refreshToken }, { refreshToken: "" });
+
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: true,
+  });
+  res.status(204).json({ message: "Logout successful" });
+});
+/*Get all Users */
 const getAllUser = asyncHandler(async (req, res) => {
   try {
     const users = await User.find({});
@@ -192,4 +219,5 @@ module.exports = {
   blockUser,
   unblockUser,
   handleRefreshToken,
+  logout
 };
