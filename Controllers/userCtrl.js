@@ -13,20 +13,15 @@ const createUser = asyncHandler(async (req, res) => {
     const newUser = await User.create(req.body);
     res.json(newUser);
   } catch (error) {
-    if (error.name === "MongoServerError" && error.code === 11000) {
+    if (MongoServerError && error.code === 11000) {
       // Duplicate key error (unique constraint violation)
       return res.status(400).json({
         message: "User with this email or mobile already exists",
         success: false,
       });
     }
-
     // Handle other errors
-    console.error(error);
-    res.status(500).json({
-      message: "Internal server error",
-      success: false,
-    });
+    throw new Error(error);
   }
 });
 
@@ -97,7 +92,10 @@ const logout = asyncHandler(async (req, res) => {
     return res.status(204).json({ message: "User already logged out" });
   }
 
-  await User.findOneAndUpdate({ refreshToken: refreshToken }, { refreshToken: "" });
+  await User.findOneAndUpdate(
+    { refreshToken: refreshToken },
+    { refreshToken: "" }
+  );
 
   res.clearCookie("refreshToken", {
     httpOnly: true,
@@ -219,5 +217,5 @@ module.exports = {
   blockUser,
   unblockUser,
   handleRefreshToken,
-  logout
+  logout,
 };
